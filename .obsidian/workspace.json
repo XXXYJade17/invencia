@@ -185,7 +185,11 @@
   },
   "active": "582753abdad5e7bd",
   "lastOpenFiles": [
+    "design-inspiration.md",
+    "agent-architecture.md",
+    "requirements.md",
     "docs-guide.md",
+    "project-status.md",
     "patch5.py",
     "patch4.py",
     "patch3.py",
@@ -193,9 +197,6 @@
     "patch.py",
     "fix_req.py",
     "architecture.md",
-    "requirements.md",
-    "dify-vs-coze.md",
-    "project-status.md",
-    "design-inspiration.md"
+    "dify-vs-coze.md"
   ]
 }

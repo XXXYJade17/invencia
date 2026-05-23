@@ -178,6 +178,7 @@ relationships, inventory, summary
 | requirements.md | 需求分析文档 v1.2（含文档边界说明） | ✅ |
 | agent-architecture.md | 智能体架构决策 v2（Dify vs Coze vs 原生） | ✅ |
 | dify-vs-coze.md | Dify vs Coze 零基础对比 | ✅ |
+| docs-guide.md | 文档体系规则 v1.0 | ✅ |
 
 ---
 

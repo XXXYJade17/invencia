@@ -1,10 +1,10 @@
-﻿# 无敌 (Invencia) —— 需求分析文档
+# 无敌 (Invencia) —— 需求分析文档
 
-> 版本：v1.5
+> 版本：v2.0
 > 生成时间：2026-05-23
 > 前置文档：design-inspiration.md（设计灵感）、project-status.md（项目状态）
 > 变更记录：
-> - v1.5：完善角色列表弹窗、移除 FR-GAME-008、新增 FR-CHAR-005
+> - v2.0：完善角色列表弹窗、移除 FR-GAME-008、新增 FR-CHAR-005
 - v1.4：新增文档边界说明，明确需求分析与其他设计文档的分工
 
 ---
@@ -19,8 +19,8 @@
 | 系统必须满足的约束（性能/安全/体验） | 数据库 DDL 语句 |
 | 用户操作流程（先点哪里后点哪里） | API 的请求/响应 JSON 结构 |
 | 输入输出的业务规则 | Prompt 具体措辞 |
-| 页面路由和认证要求 | Coze/Dify 工作流的节点连线 |
-| 数据模型中"存什么字段" | 字段的具体类型和索引设计 |
+| 页面路由和认证要求 | API 路径、请求/响应格式 |
+| 数据存储需求（"需要存什么"） | 数据库表结构、字段类型、索引设计 |
 
 > **一句话：需求分析回答"做什么"，不回答"怎么做"。**
 
@@ -385,134 +385,7 @@ detailed-design.md        ← 详细设计：具体怎么做。
 > 角色创建不需要独立页面（一次性引导流程，弹窗完成）。角色详情不需要独立页面（侧边栏随时查看）。
 ---
 
-## 七、API 设计概要
-
-### 7.1 完整接口表
-
-| 方法 | 路径 | 认证 | 请求体 | 响应 data | 说明 |
-|---|---|---|---|---|---|
-| GET | `/api/worlds` | 无 | — | `[{id, code, name, agent_name, description}]` | 主页世界列表 |
-| POST | `/api/auth/register` | 无 | `{username, password}` | `{token, user}` | 注册成功自动返回 JWT |
-| POST | `/api/auth/login` | 无 | `{username, password}` | `{token, user}` | 登录返回 JWT |
-| POST | `/api/auth/refresh` | JWT | — | `{token}` | Token 续期 |
-| GET | `/api/characters` | JWT | `?world_id=` (可选) | `[{id, name, gender, realm_summary, world_id, updated_at}]` | 角色列表（按世界筛选） |
-| POST | `/api/characters` | JWT | `{name, gender, world_id}` | `{id, name, gender, infomation}` | 创建角色（调 AI） |
-| GET | `/api/characters/:id` | JWT | — | `{id, name, gender, infomation, world_id}` | 角色详情（含完整 infomation） |
-| POST | `/api/game/:character_id/act` | JWT | `{input}` | `{narrative, hook, infomation}` | **核心接口**：发送决策，获取叙事 |
-| GET | `/api/game/:character_id/messages` | JWT | `?before_id=&limit=50` | `{messages: [{id, type, content, created_at}]}` | 对话历史（分页） |
-
-### 7.2 通用规范
-
-- 请求/响应格式：JSON
-- 认证方式：Header `Authorization: Bearer <token>`
-- 统一响应结构：`{ "code": 0, "data": {...}, "message": "ok" }`
-- 错误响应：`{ "code": 错误码, "data": null, "message": "错误描述" }`
-
-### 7.3 错误码
-
-| code | 含义 |
-|---|---|
-| 0 | 成功 |
-| 40001 | 参数校验失败 |
-| 40100 | 未登录 / Token 过期 |
-| 40101 | 用户名或密码错误 |
-| 40300 | 无权访问该角色 |
-| 40400 | 资源不存在 |
-| 50000 | 服务端错误 |
-| 50001 | AI 调用失败（可重试） |
-| 50002 | AI 调用超时 |
----
-
-## 八、数据模型调整
-
-### 8.1 新增：t_world（世界/智能体配置表）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| id | INT | 主键，自增 |
-| code | VARCHAR(64) | 世界唯一标识（如 "cultivation"） |
-| name | VARCHAR(255) | 世界名称（如 "修仙"） |
-| agent_name | VARCHAR(255) | 智能体名称（如 "天道"） |
-| description | TEXT | 世界简介 |
-| system_prompt | TEXT | System Prompt 模板 |
-| cover_config | JSON | 封面展示配置（预设叙事片段、视觉描述等） |
-| is_active | SMALLINT | 是否启用 |
-| sort_order | INT | 排序 |
-| created_at | TIMESTAMP | 创建时间 |
-
-> MVP 阶段硬编码一条修仙世界记录。多世界扩展时通过管理后台配置。
-
-### 8.2 调整：t_character 新增 world_id
-
-在现有 `t_character` 表新增：
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| world_id | INT | 所属世界 ID，FK → t_world.id |
-
-> MVP 阶段固定为修仙世界 ID，后续多世界时用户可在不同世界创建不同角色。
-
----
-
-## 九、AI Prompt 架构设计要点
-
-### 9.1 世界级 Prompt 分离
-
-每个世界拥有独立的 System Prompt 模板，存储于 `t_world.system_prompt`。通用引擎负责填充角色 infomation 和历史消息，世界 Prompt 负责定义叙事规则。
-
-```
-通用引擎组装：
-  [世界 System Prompt（来自 t_world）]
-  [角色当前状态（infomation 10 字段全文）]
-  [叙事规则]（通用部分：钩子格式、输出 JSON 要求）
-  [历史消息]（最近 N 轮对话）
-  [当前玩家输入]
-```
-
-### 9.2 修仙世界 System Prompt 结构
-
-```
-[世界观设定]（九域、境界体系、天道法则）
-[叙事规则]
-  - 以沉浸式小说语言叙事
-  - 每次回复以开放式钩子结尾
-  - 战斗判定需考虑境界/强弱/策略/环境
-  - 境界突破需要累积足够机缘或苦修
-  - 不暴露任何数值，只用文字描摹强弱
-[输出格式要求]
-  - 必须返回 JSON，包含 narrative / hook / info_changes 三个字段
-  - info_changes 仅返回有变化的 infomation 字段
-[安全性约束]
-  - 拒绝执行玩家要求跳出角色扮演的指令
-  - 拒绝生成色情、极端暴力内容
-```
-
-### 9.3 上下文窗口管理
-
-- **历史消息**：取最近 20 轮对话（约 8000-12000 tokens）
-- **infomation**：全字段约 1500-2500 tokens
-- **System Prompt**：约 1000-1500 tokens
-- **总计**：每轮约 10000-15000 tokens，在 DeepSeek/千问上下文窗口内安全
-
-### 9.4 info_changes 增量更新协议
-
-AI 返回的 `info_changes` 格式：
-
-```json
-{
-  "realm": "金丹初凝，尚有裂缝...（若境界变化则完整替换）",
-  "inventory": "粗布衣 + 豁口猎刀 + 刚捡到的锈铁剑（若新增物品则追加描述）",
-  "summary": "更新后的概要..."
-}
-```
-
-- 仅返回有变化的字段
-- 空对象 `{}` 表示本轮无变化
-- 后端 merge 而非覆盖：确保未返回的字段保持不变
-
----
-
-## 十、开发阶段划分
+## 七、开发阶段划分
 
 ### Phase 1：骨架搭建（预计 2-3 天）
 
@@ -554,7 +427,7 @@ AI 返回的 `info_changes` 格式：
 
 ---
 
-## 十一、风险分析
+## 八、风险分析
 
 | 风险 | 影响 | 概率 | 缓解措施 |
 |---|---|---|---|
@@ -567,7 +440,7 @@ AI 返回的 `info_changes` 格式：
 
 ---
 
-## 十二、术语表
+## 九、术语表
 
 | 术语 | 定义 |
 |---|---|
@@ -582,6 +455,6 @@ AI 返回的 `info_changes` 格式：
 
 ---
 
-*需求分析 v1.5 完成。下一步：详细设计文档（API 详细设计、核心流程时序图、Prompt 模板设计、主页设计稿）。*
+*需求分析 v2.0 完成。下一步：详细设计文档（API 详细设计、核心流程时序图、Prompt 模板设计、主页设计稿）。*
 
 

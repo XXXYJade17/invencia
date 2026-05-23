@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "requirements.md",
+                "file": "architecture.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "requirements"
+              "title": "architecture"
             }
           }
         ]
@@ -185,9 +185,9 @@
   },
   "active": "582753abdad5e7bd",
   "lastOpenFiles": [
+    "requirements.md",
     "architecture.md",
     "dify-vs-coze.md",
-    "requirements.md",
     "project-status.md",
     "design-inspiration.md"
   ]

@@ -158,7 +158,7 @@ relationships, inventory, summary
 
 ## 七、待办
 
-- [ ] 详细设计文档（API、核心流程、Prompt 设计）
+- [ ] 详细设计文档（API、DB DDL、Coze 工作流节点设计、Prompt 模板全文）
 - [ ] 项目骨架搭建（FastAPI + SQLite + 前端页面）
 - [ ] 主页 + 注册/登录模块
 - [ ] 角色创建 + AI 出身生成
@@ -175,7 +175,9 @@ relationships, inventory, summary
 |---|---|---|
 | design-inspiration.md | 设计灵感文档（完整定稿） | ✅ |
 | project-status.md | 本文件，项目状态摘要 | ✅ |
-| requirements.md | 需求分析文档 v1.1 | ✅ |
+| requirements.md | 需求分析文档 v1.2（含文档边界说明） | ✅ |
+| agent-architecture.md | 智能体架构决策 v2（Dify vs Coze vs 原生） | ✅ |
+| dify-vs-coze.md | Dify vs Coze 零基础对比 | ✅ |
 
 ---
 
@@ -200,3 +202,4 @@ AI API（DeepSeek v4 / 通义千问）
 ---
 
 *下次新会话加载本文档即可完整恢复项目上下文。*
+

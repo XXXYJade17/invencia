@@ -364,57 +364,63 @@ detailed-design.md        ← 详细设计：具体怎么做。
 
 ## 六、页面结构
 
-| 页面    | 路由                    | 认证要求 | 说明                           |
-| ----- | --------------------- | ---- | ---------------------------- |
-| 平台主页  | `/`                   | 无    | 世界展示 + 预览，Landing Page 风格    |
-| 登录/注册 | `/login` `/register`  | 无    | 也可内嵌于主页弹窗                    |
-| 角色列表页 | `/characters`         | 必须   | 展示已有角色，提供创建入口                |
-| 创建角色页 | `/characters/create`  | 必须   | 角色名 + 性别选择 + AI 生成 Loading   |
-| 角色详情页 | `/characters/:id`     | 必须   | 古风卷轴展示 infomation + "踏入仙途"按钮 |
-| 游戏主界面 | `/game/:character_id` | 必须   | 对话区 + 输入框 + 角色面板侧栏/弹窗        |
+精简为 3 个视图 + 3 个弹窗，减少页面维护成本。
 
-> MVP 阶段使用前端路由（Hash 路由或简易 SPA 切换）。主页为独立 Landing Page，游戏内部共用一套布局。
+### 视图
 
+| 视图 | 路由 | 认证 | 说明 |
+|---|---|---|---|
+| **主页** | `/` | 无 | 平台 Landing Page：世界展示 + 示例叙事 |
+| **登录/注册** | `/login` | 无 | 登录表单 + 注册入口；也可在主页弹窗实现 |
+| **游戏主界面** | `/game/:character_id` | JWT | 核心视图，内含对话区 + 输入框 + 角色面板侧栏 |
+
+### 弹窗
+
+| 弹窗 | 触发条件 | 说明 |
+|---|---|---|
+| **登录/注册** | 主页点击“开始修仙”且未登录 | 登录表单 / 注册表单切换 |
+| **角色列表** | 登录后进入游戏前 | 已有角色列表 + “创建新角色”按钮 |
+| **创建角色** | 角色列表中点击“创建新角色” | 角色名 + 性别 + AI 生成 → 预览 → 踏入仙途 |
+
+> 角色创建不需要独立页面（一次性引导流程，弹窗完成）。角色详情不需要独立页面（侧边栏随时查看）。
 ---
 
 ## 七、API 设计概要
 
-### 7.1 主页（免认证）
+### 7.1 完整接口表
 
-| 方法 | 路径 | 说明 | 认证 |
-|---|---|---|---|
-| GET | `/api/worlds` | 获取可用世界列表及介绍 | 无 |
+| 方法 | 路径 | 认证 | 请求体 | 响应 data | 说明 |
+|---|---|---|---|---|---|
+| GET | `/api/worlds` | 无 | — | `[{id, code, name, agent_name, description}]` | 主页世界列表 |
+| POST | `/api/auth/register` | 无 | `{username, password}` | `{token, user}` | 注册成功自动返回 JWT |
+| POST | `/api/auth/login` | 无 | `{username, password}` | `{token, user}` | 登录返回 JWT |
+| POST | `/api/auth/refresh` | JWT | — | `{token}` | Token 续期 |
+| GET | `/api/characters` | JWT | `?world_id=` (可选) | `[{id, name, gender, realm_summary, world_id, updated_at}]` | 角色列表（按世界筛选） |
+| POST | `/api/characters` | JWT | `{name, gender, world_id}` | `{id, name, gender, infomation}` | 创建角色（调 AI） |
+| GET | `/api/characters/:id` | JWT | — | `{id, name, gender, infomation, world_id}` | 角色详情（含完整 infomation） |
+| POST | `/api/game/:character_id/act` | JWT | `{input}` | `{narrative, hook, infomation}` | **核心接口**：发送决策，获取叙事 |
+| GET | `/api/game/:character_id/messages` | JWT | `?before_id=&limit=50` | `{messages: [{id, type, content, created_at}]}` | 对话历史（分页） |
 
-### 7.2 认证
-
-| 方法 | 路径 | 说明 | 认证 |
-|---|---|---|---|
-| POST | `/api/auth/register` | 注册 | 无 |
-| POST | `/api/auth/login` | 登录，返回 JWT | 无 |
-| POST | `/api/auth/refresh` | 刷新 Token | JWT |
-
-### 7.3 角色
-
-| 方法 | 路径 | 说明 | 认证 |
-|---|---|---|---|
-| GET | `/api/characters` | 获取当前用户角色列表 | JWT |
-| POST | `/api/characters` | 创建角色（触发 AI 生成出身） | JWT |
-| GET | `/api/characters/:id` | 获取角色详情（含 infomation） | JWT |
-
-### 7.4 游戏
-
-| 方法 | 路径 | 说明 | 认证 |
-|---|---|---|---|
-| POST | `/api/game/:character_id/act` | 核心接口：发送玩家决策，获取 AI 叙事 | JWT |
-| GET | `/api/game/:character_id/messages` | 获取对话历史（分页） | JWT |
-
-### 7.5 通用规范
+### 7.2 通用规范
 
 - 请求/响应格式：JSON
 - 认证方式：Header `Authorization: Bearer <token>`
 - 统一响应结构：`{ "code": 0, "data": {...}, "message": "ok" }`
 - 错误响应：`{ "code": 错误码, "data": null, "message": "错误描述" }`
 
+### 7.3 错误码
+
+| code | 含义 |
+|---|---|
+| 0 | 成功 |
+| 40001 | 参数校验失败 |
+| 40100 | 未登录 / Token 过期 |
+| 40101 | 用户名或密码错误 |
+| 40300 | 无权访问该角色 |
+| 40400 | 资源不存在 |
+| 50000 | 服务端错误 |
+| 50001 | AI 调用失败（可重试） |
+| 50002 | AI 调用超时 |
 ---
 
 ## 八、数据模型调整

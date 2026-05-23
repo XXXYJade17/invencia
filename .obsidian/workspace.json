@@ -185,6 +185,8 @@
   },
   "active": "582753abdad5e7bd",
   "lastOpenFiles": [
+    "patch.py",
+    "fix_req.py",
     "architecture.md",
     "requirements.md",
     "dify-vs-coze.md",

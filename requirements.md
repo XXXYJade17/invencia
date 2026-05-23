@@ -1,10 +1,10 @@
 ﻿# 无敌 (Invencia) —— 需求分析文档
 
-> 版本：v1.2
+> 版本：v1.3
 > 生成时间：2026-05-23
 > 前置文档：design-inspiration.md（设计灵感）、project-status.md（项目状态）
 > 变更记录：
-> - v1.2：新增文档边界说明，明确需求分析与其他设计文档的分工
+> - v1.3：新增文档边界说明，明确需求分析与其他设计文档的分工
 
 ---
 
@@ -49,7 +49,7 @@ detailed-design.md        ← 详细设计：具体怎么做。
 | design-inspiration.md | 灵感 | 做成什么样？ | 九域世界观、境界体系 |
 | **requirements.md** | **需求** | **必须做什么？** | FR-GAME-001 自由文本输入、NFR 性能要求 |
 | architecture.md | 概要设计 | 用什么技术做？ | FastAPI + Coze + SQLite |
-| detailed-design.md | 详细设计 | 每步怎么实现？ | Coze 工作流节点配置、Prompt 全文 |
+
 ---
 
 ## 一、项目定位
@@ -360,14 +360,14 @@ detailed-design.md        ← 详细设计：具体怎么做。
 
 ## 六、页面结构
 
-| 页面 | 路由 | 认证要求 | 说明 |
-|---|---|---|---|
-| 平台主页 | `/` | 无 | 世界展示 + 预览，Landing Page 风格 |
-| 登录/注册 | `/login` `/register` | 无 | 也可内嵌于主页弹窗 |
-| 角色列表页 | `/characters` | 必须 | 展示已有角色，提供创建入口 |
-| 创建角色页 | `/characters/create` | 必须 | 角色名 + 性别选择 + AI 生成 Loading |
-| 角色详情页 | `/characters/:id` | 必须 | 古风卷轴展示 infomation + "踏入仙途"按钮 |
-| 游戏主界面 | `/game/:character_id` | 必须 | 对话区 + 输入框 + 角色面板侧栏/弹窗 |
+| 页面    | 路由                    | 认证要求 | 说明                           |
+| ----- | --------------------- | ---- | ---------------------------- |
+| 平台主页  | `/`                   | 无    | 世界展示 + 预览，Landing Page 风格    |
+| 登录/注册 | `/login` `/register`  | 无    | 也可内嵌于主页弹窗                    |
+| 角色列表页 | `/characters`         | 必须   | 展示已有角色，提供创建入口                |
+| 创建角色页 | `/characters/create`  | 必须   | 角色名 + 性别选择 + AI 生成 Loading   |
+| 角色详情页 | `/characters/:id`     | 必须   | 古风卷轴展示 infomation + "踏入仙途"按钮 |
+| 游戏主界面 | `/game/:character_id` | 必须   | 对话区 + 输入框 + 角色面板侧栏/弹窗        |
 
 > MVP 阶段使用前端路由（Hash 路由或简易 SPA 切换）。主页为独立 Landing Page，游戏内部共用一套布局。
 
@@ -572,6 +572,6 @@ AI 返回的 `info_changes` 格式：
 
 ---
 
-*需求分析 v1.2 完成。下一步：详细设计文档（API 详细设计、核心流程时序图、Prompt 模板设计、主页设计稿）。*
+*需求分析 v1.3 完成。下一步：详细设计文档（API 详细设计、核心流程时序图、Prompt 模板设计、主页设计稿）。*
 
 

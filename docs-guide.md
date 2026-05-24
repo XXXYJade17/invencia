@@ -204,6 +204,7 @@ with open(path, 'w', encoding='utf-8-sig', newline='') as f:
 | design-inspiration.md | 灵感 | — | ✅ |
 | requirements.md | 需求分析 | v2.5 | ✅ |
 | docs-guide.md | 本文件 | v1.1 | ✅ |
+| project-status.md | 项目状态 | v1.0 | ✅ |
 | architecture.md | 概要设计 | — | ❌ 待写 |
 | detailed-design.md | 详细设计 | — | ❌ 待写 |
 

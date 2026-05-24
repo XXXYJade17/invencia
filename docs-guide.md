@@ -1,6 +1,6 @@
 ﻿# 无敌 (Invencia) —— 文档体系规则
 
-> 版本：v1.0
+> 版本：v1.1
 > 日期：2026-05-24
 > 用途：定义所有文档的类型、范围、边界和编写规范。每次修改文档前必须参考本文档。
 
@@ -75,9 +75,9 @@ master 分支  → 代码（当前为空）
 docs 分支    → 全部文档
 ```
 
-- 所有 `.md` 文档仅在 `docs` 分支维护
-- `master` 分支仅保留 `.gitignore` 等工程文件
-- 文档更新：切换到 `docs` 分支 → 修改 → commit → push
+- 所有 .md 文档仅在 docs 分支维护
+- master 分支仅保留 .gitignore 等工程文件
+- 文档更新：切换到 docs 分支 → 修改 → commit → push
 
 ### 2.2 文件命名
 
@@ -91,13 +91,47 @@ docs 分支    → 全部文档
 
 ## 三、编写规范
 
+### 3.0 格式强制要求（项目级）
+
+以下规则适用于本项目所有 Markdown 文档，**每次编辑必须严格遵守**，提交前逐项自查。
+
+| # | 规则 | 说明 |
+|---|------|------|
+| 1 | **UTF-8 with BOM** | 文件必须以 `EF BB BF` 开头。写入时必须使用 `[System.Text.UTF8Encoding]::new($true)` 或 Python `encoding='utf-8-sig'` |
+| 2 | **CRLF 行尾** | 所有行尾必须是 `\r\n`，禁止混入单独的 `\n` |
+| 3 | **三反引号代码块** | 代码块、JSON、Mermaid 等一律使用三个反引号 ``` 包裹，禁止缩进式代码块（4 空格） |
+| 4 | **无多余空行** | 代码块首尾不得有空行；章节之间至多 1 个空行；文件末尾恰好 1 个空行 |
+| 5 | **缩进规则** | 使用 2 空格缩进列表嵌套；禁止 Tab 字符；表格对齐空格不强制 |
+| 6 | **禁止 0x3F 字节** | 文件不得出现 `3F` 字节（即 `?` 被错误编码后的产物），提交前用 hex 工具验证 |
+
+**验证命令**：
+
+```powershell
+# 检查 BOM
+$bytes = [System.IO.File]::ReadAllBytes('path/to/file.md')
+if ($bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) { Write-Host "BOM OK" }
+
+# 检查 0x3F 污染
+$bad = ($bytes | Where-Object { $_ -eq 0x3F }).Count
+if ($bad -gt 0) { Write-Host "WARNING: $bad 0x3F bytes found" }
+```
+
+**安全写入模板（Python）**：
+
+```python
+import os
+path = 'D:/Project/docs/invencia/FILE.md'
+content = "..."  # 所有换行用 \r\n
+with open(path, 'w', encoding='utf-8-sig', newline='') as f:
+    f.write(content)
+```
+
 ### 3.1 通用规范
 
-- 编码：UTF-8 with BOM（`[System.Text.UTF8Encoding]::new($true)`）
-- 行尾：CRLF（`\r\n`）
 - 标题层级：`##` 一级章节，`###` 二级，`####` 三级
 - 功能需求编号：`FR-{MODULE}-{NNN}`（如 FR-GAME-001）
 - 表格使用 Markdown 原生语法，不嵌套 HTML
+- 禁止在文档中使用实现术语（如 JWT、bcrypt、SQLite、FastAPI）——仅允许在详细设计中出现
 
 ### 3.2 FR 编写规范
 
@@ -168,11 +202,8 @@ docs 分支    → 全部文档
 | 文件 | 类型 | 版本 | 状态 |
 |---|---|---|---|
 | design-inspiration.md | 灵感 | — | ✅ |
-| requirements.md | 需求分析 | v2.1 | ✅ |
-| agent-architecture.md | 决策记录 | v2 | ✅ |
-| dify-vs-coze.md | 调研分析 | — | ✅ |
-| project-status.md | 项目状态 | — | ✅ |
-| docs-guide.md | 本文件 | v1.0 | ✅ |
+| requirements.md | 需求分析 | v2.5 | ✅ |
+| docs-guide.md | 本文件 | v1.1 | ✅ |
 | architecture.md | 概要设计 | — | ❌ 待写 |
 | detailed-design.md | 详细设计 | — | ❌ 待写 |
 

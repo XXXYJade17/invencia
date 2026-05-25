@@ -42,7 +42,7 @@
 ### 1.3 MVP 首个世界：修仙（五域）
 
 - **智能体名称**：天道
-- **世界设定**：五域修仙界（详见 design-inspiration.md）
+- **世界设定**：玄天界（详见 design-inspiration.md）
 - **核心 slogan**：千人千命，天道为笔。
 
 > 技术决策速览已移至 [docs-guide.md](docs-guide.md)。
@@ -137,7 +137,7 @@
 
 #### FR-CHAR-003 查看角色面板
 - **内容**：以古风玉简/卷轴风格展示 infomation 全部 10 个子字段
-- **字段**：realm（境界）、power（战力）、origin（出身）、obsession（执念）、location（位置）、dao_heart（道心）、causality（因果）、relationships（人际关系）、inventory（物品）、summary（一句话概要）
+- **字段**：realm（境界）、power（战力）、origin（出身）、location（位置）、dao_heart（道心）、causality（因果）、relationships（人际关系）、inventory（物品）
 
 #### FR-CHAR-004 角色面板实时更新
 - **规则**：每次 `/game/act` 返回后，前端获取最新的 infomation 并在面板中刷新
@@ -146,7 +146,7 @@
 - **描述**：根据世界 ID 查询当前用户在该世界下的所有角色
 - **输入**：`world_id`（可选，不传则返回全部世界的角色）
 - **规则**：与 FR-CHAR-001 共用同一接口 `GET /api/characters`，通过 query 参数区分
-- **输出**：角色简要列表（id、name、gender、realm_summary、updated_at）
+- **输出**：角色简要列表（id、name、gender、updated_at）
 - **使用场景**：角色列表弹窗按世界分类展示
 
 ---
@@ -194,7 +194,7 @@
   - 确保 10 个子字段始终完整（不允许字段缺失）
 - **示例**：
   - 玩家获得一把剑 → inventory 字段追加描述
-  - 玩家突破境界 → realm、power、summary 同时更新
+  - 玩家突破境界 → realm、power 同时更新
 
 #### FR-GAME-006 对话历史展示
 - **描述**：游戏界面展示历史对话，类似聊天界面

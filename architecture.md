@@ -600,10 +600,10 @@ sequenceDiagram
 Dify Chatflow Agent 节点原生支持 function calling：
 1. Agent 接收玩家输入 + System Prompt
 2. LLM 推理：是否需要调用工具？
-3. 如需要 → 调用 Tool（如 `awaken-spiritual-roots`） → 获取结果 → 继续推理
+3. 如需要 → 调用 Tool（如 `dao-rhyme-assess`） → 获取结果 → 继续推理
 4. 输出最终 JSON（叙事 + hooks + info_changes）
 
-工具注册为 Dify Code Tool，详见详细设计 `05c-tool-spiritual-roots.md`。
+工具注册为 Dify Code Tool，详见详细设计 `xuantian-realm/04-tools.md`。
 
 ### 8.4 后端职责 vs Dify 职责
 

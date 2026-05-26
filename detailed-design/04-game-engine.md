@@ -1,7 +1,9 @@
-# 04 —— 游戏核心引擎详细设计
+﻿# 04 —— 游戏核心引擎详细设计
 
-> 版本：v2.0
+> 版本：v2.2
 > 日期：2026-05-25
+> **v2.2 变更**：适配武道化（境界重设、道韵评定移除、道韵引入）。
+**v2.1 变更**：Prompt 和工具引用更新至 xuantian-realm/ 子目录。
 > 依赖：03-characters.md（角色数据 + infomation merge）、05-dify-workflows.md（Dify Workflow + Chatflow Agent）
 >
 > **v2.0 变更**：平台切至 Dify。API 调用适配 Dify Workflow/Chatflow API。工具调度由 Dify Agent 内部处理，后端无需感知。
@@ -20,7 +22,7 @@
   │     └── 从 DB 读取最近 N 条对话历史（默认 20 条）
   │
   ├─ 2. 调用 Dify Chatflow（Agent 自主处理工具调用）
-  │     └── 传入上下文 + System Prompt → Agent 叙事 → 工具调用（如灵根觉醒） → 返回完整结果
+  │     └── 传入上下文 + System Prompt → Agent 叙事 → 工具调用（如道韵评定） → 返回完整结果
   │
   ├─ 3. 解析响应
   │     ├── 提取 narrative（叙事文本）
@@ -100,10 +102,9 @@ def process_player_action(character_id, user_id, content):
             "INSERT INTO messages (character_id,role,content,metadata) VALUES (?,'assistant',?,?)",
             (character_id, narrative, json.dumps(metadata) if metadata else None))
 
-    # 7. 灵根觉醒事件日志
+    # 7. 道韵评定事件日志
     if metadata.get("event_type") == "awakening":
-        log_awakening(character_id, new_info["cultivation"]["spiritual_roots"],
-                       metadata.get("root_rarity", "unknown"))
+        log_awakening(character_id, new_info["cultivation"]["                       metadata.get("root_rarity", "unknown"))
 
     return {"narrative":narrative, "hooks":hooks,
         "info_changes":info_changes, "character":{**character, "infomation":new_info}}
@@ -264,8 +265,7 @@ def load_recent_messages(character_id: int, limit: int = 20) -> list[dict]:
 | 策略 | 值 | 说明 |
 |------|-----|------|
 | 历史消息上限 | 20 条 | 平衡 Token 消耗与连贯性 |
-| infomation 全量传入 | 是 | 含 spiritual_roots，确保 Agent 理解角色现状 |
-| conversation_id | Dify 维护 | 可选：Dify 侧自动管理对话历史 |
+| infomation 全量传入 | 是 | 含 | conversation_id | Dify 维护 | 可选：Dify 侧自动管理对话历史 |
 | System Prompt | 后端传入 | Git 版本控制，支持多世界 |
 
 ---
@@ -313,18 +313,16 @@ def load_messages(character_id: int, before_id: int | None = None,
 ## 六、事件日志
 
 ```python
-def log_awakening(character_id: int, spiritual_roots: list, root_rarity: str):
-    """记录灵根觉醒事件"""
+def log_awakening(character_id: int,     """记录道韵评定事件"""
     metadata = {
-        "event_type": "spiritual_root_awakening",
-        "roots": spiritual_roots,
-        "rarity": root_rarity
+        "event_type": "dao_rhyme_assessment",
+        "rhyme_level": rhyme_name
     }
     with get_db() as conn:
         conn.execute(
             "INSERT INTO messages (character_id, role, content, metadata) "
             "VALUES (?, 'system', ?, ?)",
-            (character_id, "【天道裁定】灵根觉醒", json.dumps(metadata))
+            (character_id, "【天道裁定】道韵评定", json.dumps(metadata))
         )
 ```
 

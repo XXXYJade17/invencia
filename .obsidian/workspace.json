@@ -1,0 +1,222 @@
+{
+  "main": {
+    "id": "635c63e5ddcc31f9",
+    "type": "split",
+    "children": [
+      {
+        "id": "f767028ad40c419f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d215c2bbeb81e02a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "detailed-design/xuantian-realm/01-setting.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01-setting"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9af9d9c2428a8ef4",
+    "type": "split",
+    "children": [
+      {
+        "id": "59e87a44c77b4fce",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bb172c9bd39af9e9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "fd0bae7b6aaa6aac",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "8460b36d61d6e592",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f9c99dcd5294b4d8",
+    "type": "split",
+    "children": [
+      {
+        "id": "a20e3791ba0c7d10",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5a44614a3a451c3d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "detailed-design/05-coze-workflows.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "05-coze-workflows 的反向链接列表"
+            }
+          },
+          {
+            "id": "b797a22811c4fd30",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "detailed-design/05-coze-workflows.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "05-coze-workflows 的出链列表"
+            }
+          },
+          {
+            "id": "23f75649784e0b06",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "6e45c890a8497ed6",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "b029e59fab9c0b52",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "detailed-design/05-coze-workflows.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "05-coze-workflows 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "d215c2bbeb81e02a",
+  "lastOpenFiles": [
+    "detailed-design/05-dify-workflows.md",
+    "detailed-design/03-characters.md",
+    "detailed-design/04-game-engine.md",
+    "detailed-design/06-api-specs.md",
+    "detailed-design/character_create_system_prompt.md",
+    "detailed-design/xuantian-realm/README.md",
+    "detailed-design/xuantian-realm/04-tools.md",
+    "detailed-design/xuantian-realm/03-prompts.md",
+    "detailed-design/xuantian-realm/02-char-template.md",
+    "detailed-design/xuantian-realm/01-setting.md",
+    "detailed-design/xuantian-realm",
+    "detailed-design/05a-system-prompt-char-create.md",
+    "detailed-design/05b-system-prompt-narrative.md",
+    "detailed-design/07-frontend.md",
+    "detailed-design/08-deployment.md",
+    "project-status.md",
+    "detailed-design/02-auth.md",
+    "detailed-design/01-database.md",
+    "detailed-design/05-coze-workflows.md",
+    "detailed-design/05c-tool-spiritual-roots.md",
+    "_gen.py",
+    "_fix.py",
+    "detailed-design/_test.txt",
+    "_p5a.py",
+    "_p5.py",
+    "_p4.py",
+    "_p3.py",
+    "_p2.py",
+    "_p1.py",
+    "architecture.md",
+    "detailed-design/README.md",
+    "docs-guide.md",
+    "requirements.md"
+  ]
+}

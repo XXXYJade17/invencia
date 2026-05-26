@@ -1,6 +1,6 @@
 ﻿# 无敌 (Invencia) —— 项目状态总览
 
-> 版本：v2.0
+> 版本：v2.2
 > 日期：2026-05-25
 > 用途：新会话快速加载上下文——关键决策、已完成部分、待办事项、架构思路、文件记录一览。
 
@@ -12,7 +12,7 @@
 
 | 属性 | 值 |
 |---|---|
-| MVP 首个世界 | **修仙** |
+| MVP 首个世界 | **武道** |
 | 世界名 | **玄天界**（三字） |
 | 驱动 AI | **天道** 智能体（Dify Chatflow Agent） |
 | 交互方式 | 自由文本输入，AI 实时叙事，千人千命 |
@@ -26,7 +26,7 @@
 
 | # | 决策 | 结论 | 日期 |
 |---|------|------|------|
-| 1 | 平台名称 | 无敌 (Invencia)，修仙是 MVP 首个世界 | 初期 |
+| 1 | 平台名称 | 无敌 (Invencia)，武道是 MVP 首个世界 | 初期 |
 | 2 | 世界观 | 玄天界，五域（苍玄/焚天/无尘/玄冥/混元） | 初期 |
 | 3 | 境界体系 | 凡人→练气→筑基→金丹→元婴→化神→合体→渡劫→大乘→飞升 | 初期 |
 | 4 | 交互模式 | 自由文本输入，AI 驱动叙事，开放式钩子结尾 | 初期 |
@@ -38,12 +38,17 @@
 | 10 | 文档体系 | 五文档：灵感 → 需求 → 概要设计 → 详细设计(12文件) → docs-guide | v2.5 |
 | 11 | 编码标准 | UTF-8 BOM + CRLF + 三反引号代码块（见 docs-guide §3.0） | v1.1 |
 | 12 | 渡劫 MVP 策略 | 仅叙事，不执行永久死亡 | 初期 |
-| 13 | 角色创建 | **凡人模板**：单 Prompt，spiritual_roots: []，灵根在游戏中觉醒 | 2026-05-25 |
-| 14 | 灵根系统 | **Dify Code Tool**：纯代码按概率表抽取，Agent 自主判定调用时机 | 2026-05-25 |
+| 13 | 角色创建 | **凡人模板**：单 Prompt，combat_rating: "蒙昧"（v3.1 已废弃 spiritual_roots） | 2026-05-25 |
+| 14 | 道韵评定系统 | **Dify Code Tool**：纯代码按概率表抽取，Agent 自主判定调用时机 | 2026-05-25 |
 | 15 | infomation 结构 | 分层结构（basic_info/cultivation/physique/mind_spirit + 数组字段），删除 obsession/summary | 2026-05-25 |
 | 16 | 天道推演 | **Agent 单 System Prompt + Tools**，LLM 自主调用工具，非手动路由 | 2026-05-25 |
 | 17 | Prompt 管理 | 后端 Git 管理 `backend/prompts/*.txt`，运行时通过 Dify API 参数传入 | 2026-05-25 |
 
+| 18 | 玄天界重构 | 所有设定与提示词集中至 `detailed-design/xuantian-realm/`，角色模板升级为"标签——描述"格式 | 2026-05-25 |
+
+| 19 | 武道化 | 世界观从修仙转为武道。境界重设为炼气→肉身→元丹→武宗→武尊→武王→武皇→武圣→武帝 | 2026-05-25 |
+| 20 | 灵根移除 | 灵根系统全面移除。新增道韵十二重（蒙昧→证道）作为同境界战力区分维度 | 2026-05-25 |
+| 21 | 分级对齐 | 物品与功法统一为 下品→中品→上品→极品→王级→皇级→圣级→帝级→神级 | 2026-05-25 |
 ---
 
 ## 三、已完成部分
@@ -57,9 +62,9 @@
 | `architecture.md` | v1.1 | ✅ | 技术选型(Dify)、架构分层、模块划分、API 路径、DB 设计 |
 | `docs-guide.md` | v1.1 | ✅ | 四层文档边界、格式强约束、检查清单 |
 | `project-status.md` | v2.0 | ✅ | 本文件——会话上下文加载 |
-| `detailed-design/` | — | ✅ | **12 文件**，完整详细设计 |
+| `detailed-design/` | — | ✅ | **9 文件（旧 4 文件合并至 xuantian-realm/）**，完整详细设计 |
 
-### 3.2 详细设计文件清单（12 文件）
+### 3.2 详细设计文件清单（9 文件（旧 4 文件合并至 xuantian-realm/））
 
 | # | 文件 | 版本 | 核心内容 |
 |---|------|------|----------|
@@ -71,7 +76,7 @@
 | 5 | `05-dify-workflows.md` | v4.0 | Workflow(角色创建) + Chatflow Agent(天道推演) + API 封装 |
 | 5a | `05a-system-prompt-char-create.md` | v4.0 | 角色创建单 Prompt（凡人模板） |
 | 5b | `05b-system-prompt-narrative.md` | v4.0 | 天道推演 Agent System Prompt + 工具感知 |
-| 5c | `05c-tool-spiritual-roots.md` | v2.0 | 灵根觉醒 Dify Code Tool（概率表 + 实现） |
+| 5c | `05c-tool-spiritual-roots.md` | v2.0 | 道韵评定 Dify Code Tool（概率表 + 实现） |
 | 6 | `06-api-specs.md` | — | 14 个 API JSON 示例 |
 | 7 | `07-frontend.md` | — | HTML 骨架 + CSS 黑底古风 + JS 模块 |
 | 8 | `08-deployment.md` | — | Nginx + Uvicorn + .env |
@@ -98,7 +103,7 @@
   /game/:character_id     游戏主界面（需认证）
 
 3 弹窗：
-  登录/注册弹窗           主页"开始修仙"触发
+  登录/注册弹窗           主页"开始武道"触发
   角色列表弹窗             登录后自动弹出
   创建角色弹窗             角色列表中触发
 ```
@@ -110,7 +115,7 @@
 ### 4.1 文档（全部完成 ✅）
 
 - [x] `architecture.md`（概要设计 v1.1，Dify 平台）
-- [x] `detailed-design/`（12 文件完整详细设计）
+- [x] `detailed-design/`（9 文件（旧 4 文件合并至 xuantian-realm/）完整详细设计）
 
 ### 4.2 开发 Phase（来自 requirements.md §七）
 
@@ -127,7 +132,7 @@
 - [ ] Docker 部署 Dify 实例
 - [ ] 创建 Workflow `char-creation`（按 `05-dify-workflows.md §四` 配置）
 - [ ] 创建 Chatflow `tiandao-narrative`（按 `§五` 配置 Agent + Tools）
-- [ ] 注册 Code Tool `awaken-spiritual-roots`（按 `05c-tool-spiritual-roots.md`）
+- [ ] 注册 Code Tool `dao-rhyme-assess`（按 `xuantian-realm/04-tools.md`）
 - [ ] 上传玄天界知识库文档
 
 ---
@@ -182,7 +187,7 @@
 ```
 玩家输入 → Dify Chatflow
   → Agent 推理：需要调用工具？
-    ├─ 是（如灵根觉醒） → 调用 awaken-spiritual-roots → 获取结果 → 融入叙事
+    ├─ 是（如道韵评定） → 调用 dao-rhyme-assess → 获取结果 → 融入叙事
     └─ 否 → 直接输出叙事
   → 返回: { narrative, hooks, info_changes, metadata }
   → 后端 merge_infomation() → 持久化 → 返回前端
@@ -193,9 +198,9 @@
 ```
 infomation
 ├── basic_info {appearance, personality, origin}    标量覆盖
-├── cultivation {realm, power, dao_heart, spiritual_roots[]}  标量覆盖
+├── cultivation {realm, physique, soul}  标量覆盖
 ├── physique {condition, traits[]}                  标量覆盖
-├── mind_spirit {mental_state, spiritual_power}     标量覆盖
+├── combat_rating         标量覆盖
 ├── inventory[] {name,type,grade,quantity,desc}     数组按name合并
 ├── techniques[] {name,type,mastery,desc}           数组按name合并
 ├── relationships[] {name,identity,relationship,attitude,notes} 数组按name合并
@@ -205,17 +210,17 @@ infomation
 
 **Merge 算法**：标量直接覆盖；数组按 name/event 匹配→更新或追加；inventory quantity=0 删除。
 
-### 5.4 灵根体系
+### 5.4 道韵评定体系
 
 | 稀有度 | 概率 | 包含 |
 |--------|------|------|
-| common | 70% | 伪灵根 + 三灵根 |
-| uncommon | 18% | 双灵根 |
-| rare | 10% | 天灵根 + 异灵根（风雷冰） |
-| legendary | 1.5% | 混沌灵根 + 阴阳灵根 |
+| common | 70% | 伪道韵评定 + 三道韵评定 |
+| uncommon | 18% | 双道韵评定 |
+| rare | 10% | 天道韵评定 + 异道韵评定（风雷冰） |
+| legendary | 1.5% | 混沌道韵评定 + 阴阳道韵评定 |
 | cursed | 0.5% | 天漏之体 |
 
-灵根在角色创建时为空（`spiritual_roots: []`），由 Agent 在叙事中自主调用 `awaken-spiritual-roots` 工具觉醒。
+道韵评定在角色创建时为"蒙昧"，由 Agent 在叙事中自主调用 `dao-rhyme-assess` 工具觉醒。
 
 ---
 
@@ -223,14 +228,32 @@ infomation
 
 | 文件 | 动作 | 版本变更 | 关键内容 |
 |------|------|----------|----------|
+| `detailed-design/xuantian-realm/01-setting.md` | **新建** | v1.0 | 玄天界完整世界观设定 |
+| `detailed-design/xuantian-realm/02-char-template.md` | **新建** | v1.0 | 角色信息模板（"标签——描述"格式） |
+| `detailed-design/xuantian-realm/03-prompts.md` | **新建** | v1.0 | 合并 05a+05b，适配新模板 |
+| `detailed-design/xuantian-realm/04-tools.md` | **新建** | v1.0 | 从 05c 迁移，适配新模板 |
+| `detailed-design/xuantian-realm/README.md` | **新建** | v1.0 | 子目录索引 |
+| `detailed-design/README.md` | 更新 | v2.0→v3.0 | 索引新增 xuantian-realm/ |
+| `detailed-design/03-characters.md` | **重写** | v2.1→v3.0 | 适配新角色模板 + 合并算法重写 |
+| `detailed-design/04-game-engine.md` | 更新 | v2.0→v2.1 | 引用更新至 xuantian-realm/ |
+| `detailed-design/05-dify-workflows.md` | 更新 | v4.0→v4.1 | 引用更新至 xuantian-realm/ |
+| `design-inspiration.md` | 更新 | — | 玄天界内容迁移至 xuantian-realm/ |
+| `project-status.md` | 更新 | v2.0→v2.1 | 本文件——全局上下文更新 |
+| `05a-system-prompt-char-create.md` | **删除** | — | 合并至 xuantian-realm/03-prompts.md |
+| `05b-system-prompt-narrative.md` | **删除** | — | 合并至 xuantian-realm/03-prompts.md |
+| `05c-tool-spiritual-roots.md` | **删除** | — | 合并至 xuantian-realm/04-tools.md |
+| `character_create_system_prompt.md` | **删除** | — | 冗余文件清理 |
+
+## 六、重要文件修改记录（本次会话）
+
+| 文件 | 动作 | 版本变更 | 关键内容 |
+|---|------|----------|----------|
 | `architecture.md` | 新建 → 更新 | v1.0 → v1.1 | Coze→Dify 切换，技术栈更新 |
 | `detailed-design/05-dify-workflows.md` | **新建**（替换 05-coze-workflows.md） | v4.0 | Dify Workflow + Chatflow Agent 配置 |
-| `detailed-design/05a-...-char-create.md` | 重写 | v3.0 → v4.0 | 单 Prompt，凡人模板，删除 4 节点设计 |
-| `detailed-design/05b-...-narrative.md` | 重写 | v3.0 → v4.0 | Agent 单 Prompt + 工具感知，删除手动路由 |
-| `detailed-design/05c-...-spiritual-roots.md` | 更新 | v1.0 → v2.0 | Dify Code Tool，Agent 自主调用 |
 | `detailed-design/04-game-engine.md` | 重写 | v1.1 → v2.0 | Dify API 调用，删除手动工具调度 |
 | `detailed-design/03-characters.md` | 更新 | v2.0 → v2.1 | spiritual_roots 字段，Dify 引用 |
-| `detailed-design/README.md` | 更新 | v1.1 → v2.0 | 索引更新，Coze→Dify |
+| detailed-design/xuantian-realm/ | v1.0 | 新增 | 玄天界设定与提示词合集（4文件） |
+| detailed-design/README.md | v3.0 | 更新 | 索引更新，引用 xuantian-realm/ |
 | `docs-guide.md` | 更新 | — | Coze→Dify 替换 |
 | `project-status.md` | 重写 | v1.0 → v2.0 | 本文件——全量上下文更新 |
 

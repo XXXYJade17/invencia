@@ -8,7 +8,7 @@
 
 | # | 文件 | 内容 |
 |---|------|------|
-| 1 | [01-setting.md](./01-setting.md) | 世界观完整设定：五域、历史、修炼体系、天道法则 |
+| 1 | [01-setting.md](./01-setting.md) → [setting/](./setting/) | 世界设定索引（5文件：简介/五域/历史/修炼路径/规则） |
 | 2 | [02-char-template.md](./02-char-template.md) | 角色信息 JSON 模板：字段定义、凡人模板、合并规则 |
 | 3 | [03-prompts.md](./03-prompts.md) | AI Prompt 合集：角色创建 Prompt + 天道推演 Agent Prompt |
 | 4 | [04-tools.md](./04-tools.md) | 工具设计：道韵评定器 + 未来工具模板 |

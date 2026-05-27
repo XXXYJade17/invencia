@@ -49,7 +49,7 @@
   ├── 07-frontend.md           <- 依赖 API 规范
   ├── 08-deployment.md         <- 最后阅读
   └── xuantian-realm/          <- 玄天界内容层（角色模板、Prompt、工具）
-        ├── 01-setting.md      <- 世界观
+        ├── xuantian-realm/setting/ → 世界观（拆分5文件）
         ├── 02-char-template.md <- 角色模板
         ├── 03-prompts.md      <- Prompt 合集
         └── 04-tools.md        <- 工具设计
